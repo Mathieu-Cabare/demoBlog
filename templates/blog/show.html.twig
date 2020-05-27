@@ -5,13 +5,18 @@
 
 {% block body %}
 
-<h1 class="display-4 text-center my-4">Détail de l'article</h1>
+<h1 class="display-4 text-center my-4">Détail de l'article {{article.id}}</h1>
 
-        <div class="col-md-6 border border-dark rounded mr-1 mb-1 text-center mx-auto">
-        <img src="https://picsum.photos/500/300" alt="" class=""><hr>
-                <h2>Heading</h2>
+
+        <div class="col-md-10 border border-dark rounded mr-1 mb-1 text-center mx-auto"  >
+        <img src="{{ article.image|replace({'250': "870/450"}) }}" alt="" class="mt-3 rounded"><hr>
+                <h2>{{article.title}}</h2>
+                <p>{{article.content|raw}}</p>
                 <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+                <p class="font-italic text-right">Posté le : {{article.createdAt|date('d/m/Y') }} à {{article.createdAt|date('H:i:s') }}</p>
+                <a class="btn btn-secondary mx-auto mb-3" href="{{ path('blog') }}">Articles</a>
         </div>
-
+        
 {% endblock %}
+
+{# https://picsum.photos/870/450 {{ path('blog') }} {{ article.image|replace({'250': "870/450"}) }} {{article.image}}#}
