@@ -5,14 +5,15 @@ namespace App\Controller;
 /*imporatation de classe => Ctrl + Alt + I */
 
 use App\Entity\Article;
+use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BlogController extends AbstractController
 {
@@ -173,12 +174,16 @@ class BlogController extends AbstractController
         }
 
         // On construit le formulaire
-        $form = $this->createFormBuilder($article) // on pointe sur la méthode createFormBuilder
+        // $form = $this->createFormBuilder($article) // on pointe sur la méthode createFormBuilder
 
-        ->add('title')
-        ->add('image')
-        ->add('content')
-        ->getForm();
+        // ->add('title')
+        // ->add('image')
+        // ->add('content')
+        // ->getForm();
+
+        // Permet de faire appel à la classe ArticleType permettant de générer le formulaire d'ajout/modification
+        // On présise que ce formulaire permettera de remplir un objet issu de la classe Article $article
+        $form = $this->createForm(ArticleType::class, $article);
 
         $form->handleRequest($request); // recupere tous les données de $_POST et les transmet en BDD
 
@@ -201,7 +206,8 @@ class BlogController extends AbstractController
         }
 
         return $this->render('blog/create.html.twig', [
-            'formArticle' => $form->createView()
+            'formArticle' => $form->createView(),
+            'editMode' => $article->getId() !== null // on test si l'article possède un ID ou non, si l'article possède un ID c'est une modification, si il n'a pas d'ID c'est une insertion
         ]);
     }
 

@@ -16,16 +16,19 @@
         {# For est une boucle TWIG, une commande TWIG  #}
         {# la variable 'articles' provient de la méthode index() du controller 'BlogController', elle contient tous les articles selectionnés en BDD #}
         {# newArticle est une variable de récéption que nous déclarons dans la boucle FOR et qui receptionne un article par tour de boucle  #}
+        
 
         {% for newArticles in artciles %}
                 
                 <div class="col-md-3 border border-dark rounded mr-5 mb-5 text-center">
 
-                        <img src="{{newArticles.image}}" alt="{{newArticles.title}}" class="mt-3 rounded"><hr>
+                        <img src="{{newArticles.image}}" alt="{{newArticles.title}}" class="col-md-12 mt-3 rounded"><hr>
 
                         <h2>{{newArticles.title}}</h2>
 
-                        <p>{{newArticles.content|raw}}</p>
+                        <p>{{newArticles.content|slice(3,200)|raw}}</p> 
+                        {# slice(3,200) : fonction TWIG qui retourne une partie de la chaine de caractère
+                        La fonction Raw permet de retirer les balises html de l'affichage  #}
 
                         <p>Posté le : {{newArticles.createdAt|date('d/m/Y') }} à {{newArticles.createdAt|date('H:i:s') }}</p>
 

@@ -12,11 +12,38 @@
         <img src="{{ article.image|replace({'250': "870/450"}) }}" alt="" class="mt-3 rounded"><hr>
                 <h2>{{article.title}}</h2>
                 <p>{{article.content|raw}}</p>
-                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                <p class="font-italic text-right">Posté le : {{article.createdAt|date('d/m/Y') }} à {{article.createdAt|date('H:i:s') }}</p>
-                <a class="btn btn-secondary mx-auto mb-3" href="{{ path('blog') }}">Articles</a>
+                <hr>
+                <p class="font-italic text-right">Posté le : {{article.createdAt|date('d/m/Y') }} à {{article.createdAt|date('H:i:s') }} Dans la catégorie : <strong>{{ article.category.title }}</strong> </p>
+                <a class="btn btn-secondary mx-auto mb-3" href="{{ path('blog') }}">Retour aux Articles</a>
+                {# Avec les relations entre les tables, nous avons maintenant accès a la catégorie lié à l'article et nous avons aussi accès aux commentaires liés à l'articles (relation bi-directionnelle : via l'entrée Article nous avons accès à l'entité Catégoriee et Comment pusique ces entités sont reliée entre elles) #}
+
+
+                {# Pensez à prévoir un lien qui renvoi a la liste des articles #}
         </div>
         
+
+        <h2 class="text-center">Commentaires</h2>
+
+        <div class="col-md-12">
+
+                {# Nous avons accès aux commentaires de l'article via l'entité Article #}
+                {# comment : variable de réception (déclarée ici) qui receptionne une ligne de commentaire par tour de boucle #}
+                {# article.comments : on pointe sur l'indice 'comments' de l'objet 'article' qui contient tout les commentaires liés à l'article #}
+                {% for comment in article.comments %}
+                
+                <div class="row border rounded mb-2">
+                        <div class="col-md-4">
+                        <span>{{ comment.author }}</span> 
+                        <small class="font-italic">( {{ comment.createdAt|date('d/m/Y à H:i:s') }} )</small>
+                        </div>
+                        <div class="col-md-8">
+                        <p>{{ comment.content|raw }}</p>
+                        </div>
+                </div>
+
+                {% endfor %}
+
+        </div>
 {% endblock %}
 
 {# https://picsum.photos/870/450 {{ path('blog') }} {{ article.image|replace({'250': "870/450"}) }} {{article.image}}#}
