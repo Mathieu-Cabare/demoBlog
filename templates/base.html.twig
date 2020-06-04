@@ -17,7 +17,7 @@
     </head>
     <body class="bg-secondary">
         <div class="col-md-10 bg-light rounded mx-auto ">
-        <nav class="navbar navbar-expand-md navbar-light bg-light col-md-5 rounded mx-auto ">
+        <nav class="navbar navbar-expand-md navbar-light bg-light col-md-8 rounded mx-auto ">
             <a class="navbar-brand font-weight-bold text-muted" href="{{ path('home') }}">Mon blog Synfony</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -41,6 +41,44 @@
                             <a class="dropdown-item" href="#">Sport</a>
                         </div>
                     </li>
+
+
+                    {# Si l'internaute n'est pas connecté, on lui propose de s'inscrire ou de s'identifier #}
+                    {% if not app.user  %}
+                    <li class="nav-item active">
+                        <a class="nav-link border border-light active" href="{{ path('security_login') }}">Connexion <span class="sr-only">(current)</span></a>
+                    </li>   
+                    <li class="nav-item active">
+                        <a class="nav-link border border-light active" href="{{ path('security_registration') }}">Créer un compte <span class="sr-only">(current)</span></a>
+                    </li>
+
+                    {% endif %}
+
+                    {# Si l'utilisateur est garanti d'être un ADMIN, alors on rentre dans le if et il peut accéder au BackOffice  #}
+                    {% if is_granted('ROLE_ADMIN') %}
+
+                      <li class="nav-item active">
+                        <a class="nav-link border border-light active" href="{{ path('easyadmin') }}">BackOffice<span class="sr-only">(current)</span></a>
+                    </li>   
+                        
+                    {% endif %}
+                    
+                    {# app : variable prédéfinie en TWIG qui contient beaucoups de variable d'environnement ($_POST, $_SESSION, $_GET ...)
+                    
+                    app.user : retourne les informations de la session en cours, c'est à dire les informations de l'utilisateur qui est connecté
+                     #}
+
+                     {# Si app.user renvoie True, alors l'internaute est connecté, on rentre dans le IF, on lui propose le lien 'deconnexion' #}
+
+                    {% if app.user  %}      
+
+                    <li class="nav-item active">
+                        <a class="nav-link border border-light active" href="{{ path('security_logout') }}">Déconnexion<span class="sr-only">(current)</span></a>
+                    </li>
+
+                    {% endif %}
+                    
+                    
                 </ul>
                 {#  
                     <form class="form-inline my-2 my-md-0">
@@ -49,6 +87,8 @@
                 #}
             </div>
         </nav>
+
+        
         </div>
 
         <div class="container mon-conteneur bg-light rounded">

@@ -4,10 +4,21 @@
 
 <h1 class="display-4 text-center my-4">Identifiez-vous</h1>
 
+{#  Si il y a une erreur des identifiants de connexion, alors on entre dans le if et on affiche le message d'erreur  #}
+{# error : variable TWIG qui vient du controller SecurityController #}
+{% if error %}
+
+<p class="bg-danger text-white p-2 col-md-5 mx-auto rounded text-center">{{ error.messageKey|trans(error.messageData,'security') }}</p>
+{# trans(error.messageData,'security') : on indique à TWIG que la traduiction du message d'erreur 'invalid credentials.' se trouve dans le fichier 'translations/seurity.en.php' #}
+
+{% endif %}
+
 <form method="post" class="col-md-5 mx-auto" action="{{ path('security_login') }}">
   <div class="form-group">
     <label for="_username">Email</label>
     <input type="text" class="form-control" id="username" name="_username">
+    {# On stock dans l'attribut le dernier Email posté par l'utilisateur en cas d'erreur d'identifiant #}
+    {# last_username : variable qui vient du controller SecurityController #}
   </div>
   <div class="form-group">
     <label for="_password">Mot de passe</label>
