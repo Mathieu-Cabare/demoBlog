@@ -6,8 +6,10 @@ use App\Entity\User;
 use App\Form\RegistrationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class SecurityController extends AbstractController
@@ -49,9 +51,19 @@ class SecurityController extends AbstractController
     /**
      * @Route("/connexion", name="security_login")
      */
-    public function login()
+    public function login(AuthenticationUtils $authentificationUtils): Response
     {
-        return $this->render('security/login.html.twig');
+        // renvoie le message d'erreur en cas de mauvais identifiants au moment de la connexion
+        $error = $authentificationUtils->getLastAuthenticationError();
+
+        // récupère le dernier usename (email) que l'internaute a saisi dasn le formulaire de connexion
+        $lastUsername = $authentificationUtils->getLastUsername();
+
+        return $this->render('security/login.html.twig', [
+            'last_username' => $lastUsername,
+            'error' => $error
+        ]);
+
     }
 
     /**
